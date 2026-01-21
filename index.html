@@ -201,8 +201,124 @@
                 display: none !important;
             }
 
+            /* Billed To & Mobile wrapping */
+            #customer,
+            #mobile {
+                white-space: normal !important;
+                word-wrap: break-word !important;
+                word-break: break-word !important;
+                height: auto !important;
+            }
 
+            /* Item description column wrapping */
+            #itemTable td:first-child,
+            #itemTable td:first-child input {
+                white-space: normal !important;
+                word-wrap: break-word !important;
+                word-break: break-word !important;
+                text-align: left !important;
+            }
+
+            /* Increase row height dynamically */
+            #itemTable td {
+                height: auto !important;
+                vertical-align: top !important;
+            }
+
+            /* ✅ FORCE TEXT WRAP EVERYWHERE */
+            td,
+            th {
+                white-space: normal !important;
+                word-break: break-word !important;
+            }
+
+            /* ✅ TEXTAREA PRINT FIX */
+            textarea {
+                white-space: pre-wrap !important;
+                word-break: break-word !important;
+                overflow: visible !important;
+                height: auto !important;
+            }
+
+            /* ✅ TABLE CELL HEIGHT AUTO */
+            td {
+                height: auto !important;
+                vertical-align: top !important;
+            }
+
+            td {
+                height: auto !important;
+                vertical-align: top !important;
+            }
+
+            textarea {
+                overflow: visible !important;
+                height: auto !important;
+            }
+
+            table {
+                table-layout: auto !important;
+            }
+
+            tr {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            tbody {
+                page-break-inside: avoid !important;
+            }
+
+            textarea {
+                overflow: visible !important;
+                height: auto !important;
+                min-height: unset !important;
+            }
+
+            /* Repeat header on each page */
+            thead {
+                display: table-header-group;
+            }
+
+            tbody {
+                display: table-row-group;
+            }
+
+            /* Prevent row cutting */
+            tr {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+            }
+
+            td {
+                height: auto !important;
+                vertical-align: top !important;
+            }
+
+            textarea {
+                height: auto !important;
+                overflow: visible !important;
+                white-space: pre-wrap !important;
+                word-break: break-word !important;
+            }
+
+            table {
+                table-layout: auto !important;
+            }
         }
+
+        .item-text {
+            width: 100%;
+            border: none;
+            resize: none;
+            background: transparent;
+            font-size: 14px;
+            text-align: left;
+            overflow: hidden;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
 
         .footer {
             text-align: center;
@@ -210,6 +326,12 @@
             font-style: italic;
             color: gray;
             font-size: 12px;
+        }
+
+        .print-text {
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -259,7 +381,14 @@
         <div class="row">
             <div>
                 <label>Billed To</label>
-                <input type="text" id="customer" placeholder="Customer Name">
+                <!-- <input type="text" id="customer" placeholder="Customer Name"> -->
+                <textarea id="customer" rows="1" oninput="autoGrow(this)" placeholder="Customer Name" style="
+                    width:100%;
+                    border:1px solid #d1d5db;
+                    border-radius:6px;
+                    resize:none;
+                    font-size:14px;
+                "></textarea>
             </div>
             <div>
                 <label>Mobile</label>
@@ -268,22 +397,30 @@
         </div>
 
         <table id="itemTable">
-            <tr>
-                <th>Item</th>
-                <th>Qty</th>
-                <th>Rate</th>
-                <th>Discount %</th>
-                <th>Total</th>
-                <th>Action</th>
-            </tr>
-            <tr>
-                <td><input></td>
-                <td><input type="number" oninput="calc()"></td>
-                <td><input type="number" oninput="calc()"></td>
-                <td><input type="number" value="0" oninput="calc()"></td>
-                <td class="right">0</td>
-                <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Discount %</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="itemBody">
+                <tr>
+                    <td>
+                        <textarea rows="1" oninput="autoGrow(this); calc()" class="item-text"></textarea>
+                    </td>
+                    <td><input type="number" oninput="calc()"></td>
+                    <td><input type="number" oninput="calc()"></td>
+                    <td><input type="number" value="0" oninput="calc()"></td>
+                    <td class="right">0</td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteRow(this)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
         </table>
 
         <button class="add-btn" onclick="addRow()">Add Item</button>
@@ -295,8 +432,11 @@
             </div>
         </div>
 
-        <h3 class="right" style="color:blue">Subtotal (after item discount): ₹ <span id="subTotal">0</span></h3>
-        <h3 class="right" style="color:blue">Grand Total (incl. GST): ₹ <span id="grandTotal">0</span></h3>
+        <h3 class="right">Subtotal (after item discount): ₹ <span id="subTotal">0</span></h3>
+        <h3 class="right">
+            Round Off: ₹ <span id="roundOff">0.00</span>
+        </h3>
+        <h3 class="right">Grand Total (incl. GST): ₹ <span id="grandTotal">0</span></h3>
 
         <div class="row amount-gst-row">
             <div>
@@ -323,6 +463,11 @@
     </div>
 
     <script>
+        function autoGrow(el) {
+            el.style.height = "auto";
+            el.style.height = (el.scrollHeight) + "px";
+        }
+
         // ===== Invoice Type Toggle =====
         function changeInvoiceType() {
             const type = document.getElementById("invoiceType").value;
@@ -353,17 +498,29 @@
 
         // ===== Add Item Row =====
         function addRow() {
-            let table = document.getElementById("itemTable");
-            let row = table.insertRow();
-            row.innerHTML = `
-        <td><input></td>
-        <td><input type="number" oninput="calc()"></td>
-        <td><input type="number" oninput="calc()"></td>
-        <td><input type="number" value="0" oninput="calc()"></td>
-        <td class="right">0</td>
-        <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
-    `;
+            let tbody = document.getElementById("itemBody");
+
+            let row = tbody.insertRow();
+
+            row.insertCell(0).innerHTML =
+                `<textarea rows="1" oninput="autoGrow(this); calc()" class="item-text"></textarea>`;
+
+            row.insertCell(1).innerHTML =
+                `<input type="number" oninput="calc()">`;
+
+            row.insertCell(2).innerHTML =
+                `<input type="number" oninput="calc()">`;
+
+            row.insertCell(3).innerHTML =
+                `<input type="number" value="0" oninput="calc()">`;
+
+            row.insertCell(4).className = "right";
+            row.cells[4].innerText = "0";
+
+            row.insertCell(5).innerHTML =
+                `<button class="delete-btn" onclick="deleteRow(this)">Delete</button>`;
         }
+
 
         // ===== Delete Item Row =====
         function deleteRow(btn) {
@@ -374,37 +531,38 @@
 
         // ===== Calculate Totals, GST & Amount in Words =====
         function calc() {
-            let table = document.getElementById("itemTable");
             let subtotal = 0;
+            let rows = document.querySelectorAll("#itemBody tr");
 
-            for (let i = 1; i < table.rows.length; i++) {
-                let qty = parseFloat(table.rows[i].cells[1].children[0].value) || 0;
-                let rate = parseFloat(table.rows[i].cells[2].children[0].value) || 0;
-                let discount = parseFloat(table.rows[i].cells[3].children[0].value) || 0;
+            rows.forEach(row => {
+                let qty = parseFloat(row.cells[1].querySelector("input").value) || 0;
+                let rate = parseFloat(row.cells[2].querySelector("input").value) || 0;
+                let discount = parseFloat(row.cells[3].querySelector("input").value) || 0;
 
                 let total = qty * rate;
                 let discountedTotal = total - (total * discount / 100);
-                table.rows[i].cells[4].innerText = discountedTotal.toFixed(2);
-
+                row.cells[4].innerText = discountedTotal.toFixed(2);
                 subtotal += discountedTotal;
-            }
+            });
 
             document.getElementById("subTotal").innerText = subtotal.toFixed(2);
 
             let gstRate = parseFloat(document.getElementById("gstRate").value) || 0;
             let cgst = (subtotal * gstRate / 2 / 100).toFixed(2);
             let sgst = (subtotal * gstRate / 2 / 100).toFixed(2);
-
-            // document.getElementById("gstBreakup").value = `CGST: ₹${cgst}, SGST: ₹${sgst}`;
             document.getElementById("gstBreakup").innerHTML =
                 `CGST (${gstRate / 2}%): ₹${cgst}<br>SGST (${gstRate / 2}%): ₹${sgst}`;
 
+            let exactTotal = subtotal + parseFloat(cgst) + parseFloat(sgst);
+            let roundedTotal = Math.ceil(exactTotal);
+            let roundOff = roundedTotal - exactTotal;
 
-            let grandTotal = subtotal + parseFloat(cgst) + parseFloat(sgst);
-            document.getElementById("grandTotal").innerText = grandTotal.toFixed(2);
-
-            document.getElementById("amountWords").value = numberToWords(Math.round(grandTotal)) + " Rupees Only";
+            document.getElementById("grandTotal").innerText = roundedTotal.toFixed(2);
+            document.getElementById("roundOff").innerText = roundOff.toFixed(2);
+            document.getElementById("amountWords").value =
+                numberToWords(roundedTotal) + " Rupees Only";
         }
+
 
         // ===== Convert Number to Words =====
         function numberToWords(num) {
@@ -427,6 +585,33 @@
 
         // ===== Initial Calculation =====
         calc();
+
+        window.onload = () => {
+            document.querySelectorAll("textarea").forEach(autoGrow);
+        };
+
+        function preparePrint() {
+            document.querySelectorAll("textarea").forEach(t => {
+                const div = document.createElement("div");
+                div.className = "print-text";
+                div.innerText = t.value;
+                div.setAttribute("data-textarea", "true");
+                t.style.display = "none";
+                t.parentNode.appendChild(div);
+            });
+        }
+
+        function restoreAfterPrint() {
+            document.querySelectorAll("div[data-textarea]").forEach(div => {
+                const textarea = div.parentNode.querySelector("textarea");
+                if (textarea) textarea.style.display = "";
+                div.remove();
+            });
+        }
+
+        window.onbeforeprint = preparePrint;
+        window.onafterprint = restoreAfterPrint;
+
     </script>
 
 </body>
