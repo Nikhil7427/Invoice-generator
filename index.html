@@ -442,6 +442,26 @@
                 text-align: right;
                 font-weight: 500;
             }
+
+            #itemTable td:nth-child(5) {
+                white-space: nowrap !important;
+                word-break: keep-all !important;
+            }
+        }
+
+        #itemTable th:nth-child(5),
+        #itemTable td:nth-child(5) {
+            width: 120px;
+            white-space: nowrap;
+        }
+
+        #itemTable {
+            table-layout: fixed;
+        }
+
+        #itemTable th,
+        #itemTable td {
+            font-size: 13px;
         }
 
         /* ===== TOTALS STYLING ===== */
@@ -530,6 +550,30 @@
             text-align: center;
             font-size: 13px;
             margin-top: 4px;
+        }
+
+        #itemTable th:nth-child(1) {
+            width: 30%;
+        }
+
+        #itemTable th:nth-child(2) {
+            width: 10%;
+        }
+
+        #itemTable th:nth-child(3) {
+            width: 15%;
+        }
+
+        #itemTable th:nth-child(4) {
+            width: 15%;
+        }
+
+        #itemTable th:nth-child(5) {
+            width: 15%;
+        }
+
+        #itemTable th:nth-child(6) {
+            width: 15%;
         }
     </style>
 </head>
