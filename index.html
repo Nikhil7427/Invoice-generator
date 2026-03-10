@@ -137,6 +137,16 @@
             text-align: right;
         }
 
+        .signature {
+            margin-top: 50px;
+            text-align: right;
+        }
+
+        .signature img {
+            display: block;
+            margin-left: auto;
+        }
+
         @media print {
             button {
                 display: none !important;
@@ -305,6 +315,188 @@
             table {
                 table-layout: auto !important;
             }
+
+            #companyGSTIN {
+                border: none !important;
+                font-weight: 500;
+            }
+
+            .invoice-type-proforma .company-gstin,
+            .invoice-type-quotation .company-gstin {
+                display: none !important;
+            }
+
+            .invoice-proforma .customer-gstin,
+            .invoice-quotation .customer-gstin {
+                display: none !important;
+            }
+
+            #customerGSTIN {
+                border: none !important;
+                background: transparent !important;
+                font-weight: 500;
+            }
+
+            .company-gstin {
+                display: block;
+            }
+
+            /* 🔹 Make rows inline instead of stacked */
+            .row {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 0 !important;
+                margin-bottom: 8px !important;
+            }
+
+            .row>div {
+                display: flex !important;
+                align-items: baseline !important;
+                gap: 6px !important;
+                width: 50% !important;
+            }
+
+            /* 🔹 Label inline */
+            label {
+                display: inline !important;
+                font-weight: 600;
+                margin: 0 !important;
+                white-space: nowrap;
+            }
+
+            /* 🔹 Inputs & textarea inline */
+            input,
+            textarea {
+                display: inline !important;
+                border: none !important;
+                padding: 0 !important;
+                background: transparent !important;
+                width: auto !important;
+                min-width: 150px;
+                font-size: 14px;
+            }
+
+            /* Allow wrapping for text content */
+            textarea,
+            .print-text {
+                white-space: pre-wrap !important;
+                word-break: break-word !important;
+            }
+
+            /* Keep numbers on one line only */
+            input[type="number"],
+            #billNo,
+            #billDate,
+            #gstRate {
+                white-space: nowrap !important;
+            }
+
+            .invoice-type-row {
+                display: none !important;
+                height: 0 !important;
+                overflow: hidden !important;
+            }
+
+
+            .totals-section {
+                width: 100%;
+                margin-top: 15px;
+            }
+
+            #gstBreakup {
+                display: block !important;
+                margin-top: 6px;
+                margin-left: 0;
+                clear: both;
+                font-weight: 500;
+            }
+
+            .grand-total {
+                margin-top: 8px;
+                font-size: 16px;
+            }
+
+            .amount-words {
+                display: block !important;
+                width: 100%;
+                margin-top: 18px;
+                clear: both;
+                white-space: normal !important;
+                word-break: break-word;
+            }
+
+            .totals-wrapper {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 12px;
+                width: 100%;
+            }
+
+            .totals-left {
+                width: 60%;
+                text-align: right;
+            }
+
+            .totals-right {
+                width: 35%;
+                text-align: right;
+                font-weight: 500;
+            }
+        }
+
+        /* ===== TOTALS STYLING ===== */
+
+        .totals-box {
+            width: 40%;
+            margin-left: auto;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .total-row,
+        .tax-row,
+        .grand-total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+        }
+
+        .total-row {
+            font-weight: 500;
+        }
+
+        .tax-row {
+            font-size: 13px;
+            color: #555;
+            padding-left: 18px;
+            /* visual hierarchy */
+        }
+
+        .grand-total-row {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 2px solid #000;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+
+        .company-gstin span {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .customer-gstin {
+            display: none;
+        }
+
+        .invoice-tax .customer-gstin {
+            display: block;
+        }
+
+        .invoice-proforma .company-gstin,
+        .invoice-quotation .company-gstin {
+            display: none;
         }
 
         .item-text {
@@ -333,6 +525,12 @@
             word-break: break-word;
             font-size: 14px;
         }
+
+        .company-gstin {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 4px;
+        }
     </style>
 </head>
 
@@ -344,6 +542,10 @@
             <h3 id="invoiceTitle" style="color:#2563eb; font-weight:500;">
                 Proforma Invoice
             </h3>
+            <div class="company-gstin">
+                GSTIN: <span id="companyGSTIN">09ABCDE1234F1Z5</span>
+            </div>
+
             <div style="text-align:center; font-size:13px; color:#4b5563; margin-top:8px;">
                 Phulpur, Prayagraj, Uttar Pradesh<br>
                 📞 +91 9415920769 &nbsp; | &nbsp; ✉️ Chandra15274@gmail.com
@@ -352,11 +554,11 @@
 
         <div class="row">
             <div>
-                <label>Bill No</label>
+                <label>Bill No:</label>
                 <input type="text" id="billNo" placeholder="Invoice No">
             </div>
             <div>
-                <label>Date</label>
+                <label>Date:</label>
                 <input type="date" id="billDate" value="">
             </div>
         </div>
@@ -380,7 +582,7 @@
 
         <div class="row">
             <div>
-                <label>Billed To</label>
+                <label>Billed To:</label>
                 <!-- <input type="text" id="customer" placeholder="Customer Name"> -->
                 <textarea id="customer" rows="1" oninput="autoGrow(this)" placeholder="Customer Name" style="
                     width:100%;
@@ -391,11 +593,16 @@
                 "></textarea>
             </div>
             <div>
-                <label>Mobile</label>
+                <label>Mobile:</label>
                 <input type="text" id="mobile" placeholder="Mobile Number">
             </div>
         </div>
-
+        <div class="row customer-gstin">
+            <div>
+                <label>Customer GSTIN:</label>
+                <input type="text" id="customerGSTIN" placeholder="Customer GSTIN">
+            </div>
+        </div>
         <table id="itemTable">
             <thead>
                 <tr>
@@ -431,26 +638,44 @@
                 <input type="number" id="gstRate" value="18" oninput="calc()">
             </div>
         </div>
+        <div class="totals-box">
+            <div class="total-row">
+                <span>Subtotal (after item discount):</span>
+                <span>₹ <span id="subTotal">0.00</span></span>
+            </div>
 
-        <h3 class="right">Subtotal (after item discount): ₹ <span id="subTotal">0</span></h3>
-        <h3 class="right">
-            Round Off: ₹ <span id="roundOff">0.00</span>
-        </h3>
-        <h3 class="right">Grand Total (incl. GST): ₹ <span id="grandTotal">0</span></h3>
+            <div class="total-row">
+                <span>Round Off:</span>
+                <span>₹ <span id="roundOff">0.00</span></span>
+            </div>
 
+            <div class="tax-row">
+                <span>CGST (9%):</span>
+                <span>₹ <span id="cgst">0.00</span></span>
+            </div>
+
+            <div class="tax-row">
+                <span>SGST (9%):</span>
+                <span>₹ <span id="sgst">0.00</span></span>
+            </div>
+
+            <div class="grand-total-row">
+                <span>Grand Total (incl. GST):</span>
+                <span>₹ <span id="grandTotal">0.00</span></span>
+            </div>
+        </div>
         <div class="row amount-gst-row">
             <div>
                 <label>Amount in Words:</label>
                 <input type="text" id="amountWords" readonly>
             </div>
-            <div>
+            <!-- <div>
                 <label>GST Breakup:</label>
-                <!-- <input type="text" id="gstBreakup" readonly> -->
                 <div id="gstBreakup" style="font-size:14px;"></div>
-            </div>
+            </div>  -->
         </div>
-
         <div class="signature">
+            <img src="signature.jpeg" alt="Signature" style="height:60px;"><br>
             Authorized Signature
         </div>
 
@@ -459,10 +684,23 @@
         </div>
 
 
-        <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+        <button class="print-btn" onclick="validateBeforePrint()">Print / Save PDF</button>
     </div>
 
     <script>
+        function validateBeforePrint() {
+            const type = document.getElementById("invoiceType").value;
+            const customerGSTIN = document.getElementById("customerGSTIN").value.trim();
+
+            if (type === "tax" && customerGSTIN === "") {
+                alert("Customer GSTIN is mandatory for Tax Invoice");
+                document.getElementById("customerGSTIN").focus();
+                return;
+            }
+
+            window.print();
+        }
+
         function autoGrow(el) {
             el.style.height = "auto";
             el.style.height = (el.scrollHeight) + "px";
@@ -473,16 +711,29 @@
             const type = document.getElementById("invoiceType").value;
             const title = document.getElementById("invoiceTitle");
             const footer = document.getElementById("invoiceFooter");
+            const container = document.querySelector(".container");
+
+            const customerGSTIN = document.getElementById("customerGSTIN");
+
+            container.classList.remove("invoice-tax", "invoice-proforma", "invoice-quotation");
 
             if (type === "tax") {
                 title.innerText = "Tax Invoice";
                 footer.innerText = "This is a computer-generated tax invoice";
+                container.classList.add("invoice-tax");
+                customerGSTIN.required = true;
+
             } else if (type === "proforma") {
                 title.innerText = "Proforma Invoice";
                 footer.innerText = "This is a computer-generated proforma invoice";
+                container.classList.add("invoice-proforma");
+                customerGSTIN.required = false;
+
             } else {
                 title.innerText = "Quotation";
-                footer.innerText = "This is a computer-generated Quotation";
+                footer.innerText = "This is a computer-generated quotation";
+                container.classList.add("invoice-quotation");
+                customerGSTIN.required = false;
             }
         }
 
@@ -550,8 +801,11 @@
             let gstRate = parseFloat(document.getElementById("gstRate").value) || 0;
             let cgst = (subtotal * gstRate / 2 / 100).toFixed(2);
             let sgst = (subtotal * gstRate / 2 / 100).toFixed(2);
-            document.getElementById("gstBreakup").innerHTML =
-                `CGST (${gstRate / 2}%): ₹${cgst}<br>SGST (${gstRate / 2}%): ₹${sgst}`;
+            // document.getElementById("gstBreakup").innerHTML =
+            //     `CGST (${gstRate / 2}%): ₹${cgst}<br>SGST (${gstRate / 2}%): ₹${sgst}`;
+            document.getElementById("cgst").innerText = cgst;
+            document.getElementById("sgst").innerText = sgst;
+
 
             let exactTotal = subtotal + parseFloat(cgst) + parseFloat(sgst);
             let roundedTotal = Math.ceil(exactTotal);
@@ -565,31 +819,37 @@
 
 
         // ===== Convert Number to Words =====
+        // ===== Convert Number to Words =====
         function numberToWords(num) {
-            const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
-            const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+            const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
+                'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen',
+                'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+
+            const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty',
+                'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
             if (num === 0) return 'Zero';
 
             function inWords(n) {
                 if (n < 20) return a[n];
                 if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? ' ' + a[n % 10] : '');
-                if (n < 1000) return a[Math.floor(n / 100)] + ' Hundred' + (n % 100 ? ' ' + inWords(n % 100) : '');
-                if (n < 100000) return inWords(Math.floor(n / 1000)) + ' Thousand' + (n % 1000 ? ' ' + inWords(n % 1000) : '');
-                if (n < 10000000) return inWords(Math.floor(n / 100000)) + ' Lakh' + (n % 100000 ? ' ' + inWords(n % 100000) : '');
-                return inWords(Math.floor(n / 10000000)) + ' Crore' + (n % 10000000 ? ' ' + inWords(n % 10000000) : '');
+                if (n < 1000)
+                    return a[Math.floor(n / 100)] + ' Hundred' +
+                        (n % 100 ? ' ' + inWords(n % 100) : '');
+                if (n < 100000)
+                    return inWords(Math.floor(n / 1000)) + ' Thousand' +
+                        (n % 1000 ? ' ' + inWords(n % 1000) : '');
+                if (n < 10000000)
+                    return inWords(Math.floor(n / 100000)) + ' Lakh' +
+                        (n % 100000 ? ' ' + inWords(n % 100000) : '');
+                return inWords(Math.floor(n / 10000000)) + ' Crore' +
+                    (n % 10000000 ? ' ' + inWords(n % 10000000) : '');
             }
 
             return inWords(num);
         }
 
-        // ===== Initial Calculation =====
-        calc();
-
-        window.onload = () => {
-            document.querySelectorAll("textarea").forEach(autoGrow);
-        };
-
+        // ===== Initial Setup =====
         function preparePrint() {
             document.querySelectorAll("textarea").forEach(t => {
                 const div = document.createElement("div");
@@ -611,6 +871,12 @@
 
         window.onbeforeprint = preparePrint;
         window.onafterprint = restoreAfterPrint;
+
+        window.onload = () => {
+            document.querySelectorAll("textarea").forEach(autoGrow);
+            changeInvoiceType();
+            calc();
+        };
 
     </script>
 
