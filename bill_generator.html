@@ -59,6 +59,7 @@
             font-size: 14px;
             background: #f9fafb;
             transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
         }
 
         input:focus {
@@ -147,6 +148,33 @@
             margin-left: auto;
         }
 
+        /* Editable div styling (replaces textarea for customer field) */
+        .editable-field {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 14px;
+            background: #f9fafb;
+            min-height: 40px;
+            outline: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            white-space: pre-wrap;
+            word-break: break-word;
+            box-sizing: border-box;
+        }
+
+        .editable-field:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+            background: #ffffff;
+        }
+
+        .editable-field:empty:before {
+            content: attr(data-placeholder);
+            color: #9ca3af;
+        }
+
         @media print {
             button {
                 display: none !important;
@@ -157,12 +185,6 @@
                 padding: 0;
             }
 
-            input {
-                border: none;
-                background: transparent;
-                box-shadow: none;
-            }
-
             .container {
                 box-shadow: none;
                 border: none;
@@ -170,10 +192,6 @@
 
             th:last-child,
             td:last-child {
-                display: none !important;
-            }
-
-            button {
                 display: none !important;
             }
 
@@ -211,8 +229,6 @@
                 display: none !important;
             }
 
-            /* Billed To & Mobile wrapping */
-            #customer,
             #mobile {
                 white-space: normal !important;
                 word-wrap: break-word !important;
@@ -235,35 +251,15 @@
                 vertical-align: top !important;
             }
 
-            /* ✅ FORCE TEXT WRAP EVERYWHERE */
             td,
             th {
                 white-space: normal !important;
                 word-break: break-word !important;
             }
 
-            /* ✅ TEXTAREA PRINT FIX */
-            textarea {
-                white-space: pre-wrap !important;
-                word-break: break-word !important;
-                overflow: visible !important;
-                height: auto !important;
-            }
-
-            /* ✅ TABLE CELL HEIGHT AUTO */
             td {
                 height: auto !important;
                 vertical-align: top !important;
-            }
-
-            td {
-                height: auto !important;
-                vertical-align: top !important;
-            }
-
-            textarea {
-                overflow: visible !important;
-                height: auto !important;
             }
 
             table {
@@ -277,12 +273,6 @@
 
             tbody {
                 page-break-inside: avoid !important;
-            }
-
-            textarea {
-                overflow: visible !important;
-                height: auto !important;
-                min-height: unset !important;
             }
 
             /* Repeat header on each page */
@@ -298,22 +288,6 @@
             tr {
                 break-inside: avoid !important;
                 page-break-inside: avoid !important;
-            }
-
-            td {
-                height: auto !important;
-                vertical-align: top !important;
-            }
-
-            textarea {
-                height: auto !important;
-                overflow: visible !important;
-                white-space: pre-wrap !important;
-                word-break: break-word !important;
-            }
-
-            table {
-                table-layout: auto !important;
             }
 
             #companyGSTIN {
@@ -364,9 +338,8 @@
                 white-space: nowrap;
             }
 
-            /* 🔹 Inputs & textarea inline */
-            input,
-            textarea {
+            /* 🔹 Only inputs inline — NOT textarea */
+            input {
                 display: inline !important;
                 border: none !important;
                 padding: 0 !important;
@@ -376,11 +349,22 @@
                 font-size: 14px;
             }
 
-            /* Allow wrapping for text content */
-            textarea,
-            .print-text {
-                white-space: pre-wrap !important;
-                word-break: break-word !important;
+            /* ✅ KEY FIX: Always hide textarea during print */
+            textarea {
+                display: none !important;
+            }
+
+            /* ✅ Editable div prints naturally — no special handling needed */
+            .editable-field {
+                display: inline !important;
+                border: none !important;
+                padding: 0 !important;
+                background: transparent !important;
+                min-height: unset !important;
+                box-shadow: none !important;
+                font-size: 14px;
+                white-space: pre-wrap;
+                word-break: break-word;
             }
 
             /* Keep numbers on one line only */
@@ -396,7 +380,6 @@
                 height: 0 !important;
                 overflow: hidden !important;
             }
-
 
             .totals-section {
                 width: 100%;
@@ -447,6 +430,19 @@
                 white-space: nowrap !important;
                 word-break: keep-all !important;
             }
+
+            /* Item textarea inside table */
+            #itemTable .item-text {
+                display: none !important;
+            }
+
+            #itemTable .print-text {
+                display: block !important;
+                text-align: left;
+                white-space: pre-wrap;
+                word-break: break-word;
+                font-size: 13px;
+            }
         }
 
         #itemTable th:nth-child(5),
@@ -489,7 +485,6 @@
             font-size: 13px;
             color: #555;
             padding-left: 18px;
-            /* visual hierarchy */
         }
 
         .grand-total-row {
@@ -499,7 +494,6 @@
             font-weight: 700;
             font-size: 15px;
         }
-
 
         .company-gstin span {
             font-weight: 600;
@@ -531,6 +525,12 @@
             word-break: break-word;
         }
 
+        .print-text {
+            display: none;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 14px;
+        }
 
         .footer {
             text-align: center;
@@ -538,12 +538,6 @@
             font-style: italic;
             color: gray;
             font-size: 12px;
-        }
-
-        .print-text {
-            white-space: pre-wrap;
-            word-break: break-word;
-            font-size: 14px;
         }
 
         .company-gstin {
@@ -606,6 +600,7 @@
                 <input type="date" id="billDate" value="">
             </div>
         </div>
+
         <div class="row invoice-type-row">
             <div>
                 <label>Invoice Type</label>
@@ -623,30 +618,31 @@
             </div>
         </div>
 
-
         <div class="row">
             <div>
                 <label>Billed To:</label>
-                <!-- <input type="text" id="customer" placeholder="Customer Name"> -->
-                <textarea id="customer" rows="1" oninput="autoGrow(this)" placeholder="Customer Name" style="
-                    width:100%;
-                    border:1px solid #d1d5db;
-                    border-radius:6px;
-                    resize:none;
-                    font-size:14px;
-                "></textarea>
+                <!-- ✅ FIX: Using contenteditable div instead of textarea -->
+                <!-- This renders naturally in print without any JS intervention -->
+                <div
+                    id="customer"
+                    class="editable-field"
+                    contenteditable="true"
+                    data-placeholder="Customer Name"
+                ></div>
             </div>
             <div>
                 <label>Mobile:</label>
                 <input type="text" id="mobile" placeholder="Mobile Number">
             </div>
         </div>
+
         <div class="row customer-gstin">
             <div>
                 <label>Customer GSTIN:</label>
                 <input type="text" id="customerGSTIN" placeholder="Customer GSTIN">
             </div>
         </div>
+
         <table id="itemTable">
             <thead>
                 <tr>
@@ -662,6 +658,7 @@
                 <tr>
                     <td>
                         <textarea rows="1" oninput="autoGrow(this); calc()" class="item-text"></textarea>
+                        <div class="print-text"></div>
                     </td>
                     <td><input type="number" oninput="calc()"></td>
                     <td><input type="number" oninput="calc()"></td>
@@ -682,42 +679,37 @@
                 <input type="number" id="gstRate" value="18" oninput="calc()">
             </div>
         </div>
+
         <div class="totals-box">
             <div class="total-row">
                 <span>Subtotal (after item discount):</span>
                 <span>₹ <span id="subTotal">0.00</span></span>
             </div>
-
             <div class="total-row">
                 <span>Round Off:</span>
                 <span>₹ <span id="roundOff">0.00</span></span>
             </div>
-
             <div class="tax-row">
                 <span>CGST (9%):</span>
                 <span>₹ <span id="cgst">0.00</span></span>
             </div>
-
             <div class="tax-row">
                 <span>SGST (9%):</span>
                 <span>₹ <span id="sgst">0.00</span></span>
             </div>
-
             <div class="grand-total-row">
                 <span>Grand Total (incl. GST):</span>
                 <span>₹ <span id="grandTotal">0.00</span></span>
             </div>
         </div>
+
         <div class="row amount-gst-row">
             <div>
                 <label>Amount in Words:</label>
                 <input type="text" id="amountWords" readonly>
             </div>
-            <!-- <div>
-                <label>GST Breakup:</label>
-                <div id="gstBreakup" style="font-size:14px;"></div>
-            </div>  -->
         </div>
+
         <div class="signature">
             <img src="signature.jpeg" alt="Signature" style="height:60px;"><br>
             Authorized Signature
@@ -726,7 +718,6 @@
         <div class="footer" id="invoiceFooter">
             This is a computer-generated proforma invoice
         </div>
-
 
         <button class="print-btn" onclick="validateBeforePrint()">Print / Save PDF</button>
     </div>
@@ -756,7 +747,6 @@
             const title = document.getElementById("invoiceTitle");
             const footer = document.getElementById("invoiceFooter");
             const container = document.querySelector(".container");
-
             const customerGSTIN = document.getElementById("customerGSTIN");
 
             container.classList.remove("invoice-tax", "invoice-proforma", "invoice-quotation");
@@ -766,13 +756,11 @@
                 footer.innerText = "This is a computer-generated tax invoice";
                 container.classList.add("invoice-tax");
                 customerGSTIN.required = true;
-
             } else if (type === "proforma") {
                 title.innerText = "Proforma Invoice";
                 footer.innerText = "This is a computer-generated proforma invoice";
                 container.classList.add("invoice-proforma");
                 customerGSTIN.required = false;
-
             } else {
                 title.innerText = "Quotation";
                 footer.innerText = "This is a computer-generated quotation";
@@ -781,50 +769,36 @@
             }
         }
 
-
-        // ===== Auto Bill Number =====
-        // let lastBillNumber = localStorage.getItem('lastBillNumber') || 0;
-        // let newBillNumber = parseInt(lastBillNumber) + 1;
-        // document.getElementById('billNo').value = newBillNumber;
-        // localStorage.setItem('lastBillNumber', newBillNumber);
-
         // ===== Set today's date =====
         document.getElementById('billDate').valueAsDate = new Date();
 
         // ===== Add Item Row =====
         function addRow() {
             let tbody = document.getElementById("itemBody");
-
             let row = tbody.insertRow();
 
-            row.insertCell(0).innerHTML =
-                `<textarea rows="1" oninput="autoGrow(this); calc()" class="item-text"></textarea>`;
+            // Cell 0: Item textarea + print-text div
+            let cell0 = row.insertCell(0);
+            cell0.innerHTML = `<textarea rows="1" oninput="autoGrow(this); calc()" class="item-text"></textarea><div class="print-text"></div>`;
 
-            row.insertCell(1).innerHTML =
-                `<input type="number" oninput="calc()">`;
-
-            row.insertCell(2).innerHTML =
-                `<input type="number" oninput="calc()">`;
-
-            row.insertCell(3).innerHTML =
-                `<input type="number" value="0" oninput="calc()">`;
+            row.insertCell(1).innerHTML = `<input type="number" oninput="calc()">`;
+            row.insertCell(2).innerHTML = `<input type="number" oninput="calc()">`;
+            row.insertCell(3).innerHTML = `<input type="number" value="0" oninput="calc()">`;
 
             row.insertCell(4).className = "right";
             row.cells[4].innerText = "0";
 
-            row.insertCell(5).innerHTML =
-                `<button class="delete-btn" onclick="deleteRow(this)">Delete</button>`;
+            row.insertCell(5).innerHTML = `<button class="delete-btn" onclick="deleteRow(this)">Delete</button>`;
         }
-
 
         // ===== Delete Item Row =====
         function deleteRow(btn) {
             let row = btn.parentNode.parentNode;
             row.parentNode.removeChild(row);
-            calc(); // recalculate totals
+            calc();
         }
 
-        // ===== Calculate Totals, GST & Amount in Words =====
+        // ===== Calculate Totals =====
         function calc() {
             let subtotal = 0;
             let rows = document.querySelectorAll("#itemBody tr");
@@ -845,11 +819,8 @@
             let gstRate = parseFloat(document.getElementById("gstRate").value) || 0;
             let cgst = (subtotal * gstRate / 2 / 100).toFixed(2);
             let sgst = (subtotal * gstRate / 2 / 100).toFixed(2);
-            // document.getElementById("gstBreakup").innerHTML =
-            //     `CGST (${gstRate / 2}%): ₹${cgst}<br>SGST (${gstRate / 2}%): ₹${sgst}`;
             document.getElementById("cgst").innerText = cgst;
             document.getElementById("sgst").innerText = sgst;
-
 
             let exactTotal = subtotal + parseFloat(cgst) + parseFloat(sgst);
             let roundedTotal = Math.ceil(exactTotal);
@@ -861,14 +832,11 @@
                 numberToWords(roundedTotal) + " Rupees Only";
         }
 
-
-        // ===== Convert Number to Words =====
         // ===== Convert Number to Words =====
         function numberToWords(num) {
             const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
                 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen',
                 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
-
             const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty',
                 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
@@ -893,23 +861,22 @@
             return inWords(num);
         }
 
-        // ===== Initial Setup =====
+        // ===== Sync item textarea → print-text div before printing =====
         function preparePrint() {
-            document.querySelectorAll("textarea").forEach(t => {
-                const div = document.createElement("div");
-                div.className = "print-text";
-                div.innerText = t.value;
-                div.setAttribute("data-textarea", "true");
+            // For item table textareas only
+            document.querySelectorAll("#itemBody .item-text").forEach(t => {
+                const printDiv = t.parentNode.querySelector(".print-text");
+                if (printDiv) {
+                    printDiv.innerText = t.value.trim();
+                }
+                // Hide the textarea (belt & suspenders alongside CSS)
                 t.style.display = "none";
-                t.parentNode.appendChild(div);
             });
         }
 
         function restoreAfterPrint() {
-            document.querySelectorAll("div[data-textarea]").forEach(div => {
-                const textarea = div.parentNode.querySelector("textarea");
-                if (textarea) textarea.style.display = "";
-                div.remove();
+            document.querySelectorAll("#itemBody .item-text").forEach(t => {
+                t.style.display = "";
             });
         }
 
@@ -921,9 +888,7 @@
             changeInvoiceType();
             calc();
         };
-
     </script>
 
 </body>
-
 </html>
