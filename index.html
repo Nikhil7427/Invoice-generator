@@ -6,37 +6,36 @@
     <title>Bill Generator</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #eef1f5;
-            padding: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: white;
+            padding: 0;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 794px;
+            /* A4 width */
             margin: auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid #ddd;
+            padding: 10px 12px;
+            border: none;
+            box-shadow: none;
+            border-radius: 0;
         }
 
         h2 {
-            text-align: center;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
+            margin: 2px 0;
+            font-size: 18px;
+            letter-spacing: 0.5px;
         }
 
         h3 {
-            text-align: center;
-            margin-top: 0;
-            color: #555;
+            margin: 2px 0 4px;
+            font-size: 13px;
         }
 
         .row {
             display: flex;
-            gap: 20px;
-            margin: 18px 0;
+            gap: 10px;
+            margin: 6px 0;
         }
 
         .row>div {
@@ -59,7 +58,6 @@
             font-size: 14px;
             background: #f9fafb;
             transition: border-color 0.2s, box-shadow 0.2s;
-            box-sizing: border-box;
         }
 
         input:focus {
@@ -72,21 +70,24 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            table-layout: fixed;
+            font-size: 11px;
         }
 
         th {
+            padding: 5px 4px;
+            border: 1px solid #bbb;
             background: #f3f4f6;
-            padding: 10px;
-            border: 1px solid #ccc;
             font-weight: 600;
         }
 
         td {
-            border: 1px solid #ccc;
-            padding: 6px;
-            text-align: center;
+            padding: 4px 4px;
+            border: 1px solid #bbb;
+            vertical-align: top;
+            word-break: break-word;
         }
+
 
         td input {
             border: none;
@@ -138,325 +139,266 @@
             text-align: right;
         }
 
-        .signature {
-            margin-top: 50px;
-            text-align: right;
-        }
-
-        .signature img {
-            display: block;
-            margin-left: auto;
-        }
-
-        /* Editable div styling (replaces textarea for customer field) */
-        .editable-field {
-            width: 100%;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            padding: 10px 12px;
-            font-size: 14px;
-            background: #f9fafb;
-            min-height: 40px;
-            outline: none;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            white-space: pre-wrap;
-            word-break: break-word;
-            box-sizing: border-box;
-        }
-
-        .editable-field:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
-            background: #ffffff;
-        }
-
-        .editable-field:empty:before {
-            content: attr(data-placeholder);
-            color: #9ca3af;
-        }
-
         @media print {
-            button {
-                display: none !important;
+
+            @page {
+                size: A4;
+                margin: 8mm;
             }
 
             body {
-                background: white;
-                padding: 0;
+                font-size: 11px;
+                line-height: 1.15;
+                zoom: 0.95;
             }
 
-            .container {
-                box-shadow: none;
-                border: none;
-            }
-
-            th:last-child,
-            td:last-child {
-                display: none !important;
-            }
-
-            #amountWords {
-                width: 100% !important;
-                display: block;
-            }
-
-            #gstBreakup {
-                margin-top: 10px;
-                padding-left: 0;
-                display: block;
-                font-weight: 500;
-            }
-
-            .amount-gst-row {
-                display: block !important;
-            }
-
-            .amount-gst-row>div {
-                width: 100% !important;
-                margin-bottom: 10px;
-            }
-
-            #gstBreakup {
-                margin-top: 5px;
-                padding-left: 0;
-            }
-
-            select {
-                display: none !important;
-            }
-
+            button,
+            .no-print,
+            select,
             .invoice-type-row {
                 display: none !important;
             }
 
-            #mobile {
-                white-space: normal !important;
-                word-wrap: break-word !important;
-                word-break: break-word !important;
+            input,
+            textarea {
+                border: none !important;
+                padding: 0 !important;
+                background: transparent !important;
+                font-size: 11px !important;
                 height: auto !important;
-            }
-
-            /* Item description column wrapping */
-            #itemTable td:first-child,
-            #itemTable td:first-child input {
-                white-space: normal !important;
-                word-wrap: break-word !important;
-                word-break: break-word !important;
-                text-align: left !important;
-            }
-
-            /* Increase row height dynamically */
-            #itemTable td {
-                height: auto !important;
-                vertical-align: top !important;
-            }
-
-            td,
-            th {
-                white-space: normal !important;
+                white-space: pre-wrap !important;
                 word-break: break-word !important;
             }
 
+            .container {
+                padding: 0;
+                border: none;
+                box-shadow: none;
+            }
+
+            .row {
+                margin: 4px 0 !important;
+                gap: 6px !important;
+            }
+
+            th,
             td {
-                height: auto !important;
-                vertical-align: top !important;
-            }
-
-            table {
-                table-layout: auto !important;
+                padding: 4px 4px !important;
+                font-size: 11px;
             }
 
             tr {
                 page-break-inside: avoid !important;
-                break-inside: avoid !important;
             }
 
-            tbody {
-                page-break-inside: avoid !important;
+            /* Default compact row */
+            #itemTable th,
+            #itemTable td {
+                padding: 4px 6px !important;
+                font-size: 11px;
+                line-height: 1.2;
             }
 
-            /* Repeat header on each page */
+            /* Extra compact when many rows */
+            body.compact-print #itemTable th,
+            body.compact-print #itemTable td {
+                padding: 2px 4px !important;
+                font-size: 10px !important;
+                line-height: 1.1 !important;
+            }
+
             thead {
                 display: table-header-group;
             }
 
-            tbody {
-                display: table-row-group;
+            /* Totals block */
+            .totals-box {
+                width: 42%;
+                margin-left: auto;
+                margin-top: 6px;
+                font-size: 11px;
+                border-top: 1px solid #000;
             }
 
-            /* Prevent row cutting */
+            .total-row,
+            .tax-row {
+                padding: 2px 0;
+            }
+
+            .grand-total-row {
+                border-top: 2px solid #000;
+                margin-top: 4px;
+                padding-top: 4px;
+                font-size: 12px;
+                font-weight: 700;
+            }
+
+            /* Footer compact */
+            .invoice-footer {
+                margin-top: 10px;
+                font-size: 11px;
+            }
+
+            .bank-details h4,
+            .terms h4 {
+                font-size: 12px;
+                margin-bottom: 4px;
+            }
+
+            .footer {
+                margin-top: 6px;
+                font-size: 10px;
+            }
+
+            /* GSTIN visibility logic */
+            .invoice-proforma .company-gstin,
+            .invoice-quotation .company-gstin {
+                display: none !important;
+            }
+
+            .invoice-tax .customer-gstin {
+                display: block !important;
+            }
+
+            /* Auto font shrink when items exceed limit */
+            body.compact-print {
+                font-size: 10px !important;
+            }
+
+            body.compact-print h2 {
+                font-size: 13px !important;
+            }
+
+            body.compact-print h3 {
+                font-size: 11px !important;
+            }
+
+            body.compact-print .totals-box {
+                font-size: 11px !important;
+            }
+
+            /* Hide Action column header */
+            th.action-col {
+                display: none !important;
+            }
+
+            /* Hide Action column cells */
+            td.action-col {
+                display: none !important;
+            }
+
+            table {
+                font-size: 11px;
+            }
+
+            th,
+            td {
+                padding: 4px 6px;
+            }
+
+            /* Hide last column (Action) header */
+            table th:last-child {
+                display: none !important;
+            }
+
+            /* Hide last column (Action) cells */
+            table td:last-child {
+                display: none !important;
+            }
+
+            table {
+                font-size: 11px;
+                border-collapse: collapse;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                table-layout: fixed;
+            }
+
+            th,
+            td {
+                padding: 4px 6px !important;
+                vertical-align: top;
+            }
+
             tr {
-                break-inside: avoid !important;
+                page-break-inside: avoid;
+            }
+
+            table.compact {
+                font-size: 10.5px;
+            }
+
+            table.ultra-compact {
+                font-size: 9.5px;
+            }
+
+            table.compact th,
+            table.compact td,
+            table.ultra-compact th,
+            table.ultra-compact td {
+                padding: 3px 5px !important;
+            }
+
+            @page {
+                size: A4;
+                margin: 8mm;
+            }
+
+            body {
+                zoom: 0.95;
+            }
+
+            table,
+            tr,
+            td,
+            th {
                 page-break-inside: avoid !important;
             }
 
-            #companyGSTIN {
-                border: none !important;
-                font-weight: 500;
+            .invoice-container {
+                page-break-after: avoid !important;
+                page-break-before: avoid !important;
             }
 
-            .invoice-type-proforma .company-gstin,
-            .invoice-type-quotation .company-gstin {
+            .action-col,
+            .no-print,
+            th.action-col,
+            td.action-col {
                 display: none !important;
             }
 
-            .invoice-proforma .customer-gstin,
-            .invoice-quotation .customer-gstin {
-                display: none !important;
+            body.compact-print {
+                font-size: 11px;
             }
 
-            #customerGSTIN {
-                border: none !important;
-                background: transparent !important;
-                font-weight: 500;
+            body.compact-print td,
+            body.compact-print th {
+                padding: 4px 5px;
             }
 
-            .company-gstin {
-                display: block;
+            .header-divider {
+                margin: 8px 0 12px;
             }
 
-            /* 🔹 Make rows inline instead of stacked */
-            .row {
-                display: flex !important;
-                flex-wrap: wrap !important;
-                gap: 0 !important;
-                margin-bottom: 8px !important;
+            .header-divider {
+                border-top: 3px solid #2563eb;
+                margin: 8px 0 12px;
             }
 
-            .row>div {
-                display: flex !important;
-                align-items: baseline !important;
-                gap: 6px !important;
-                width: 50% !important;
+            .signature-block {
+                page-break-inside: avoid;
             }
 
-            /* 🔹 Label inline */
-            label {
-                display: inline !important;
-                font-weight: 600;
-                margin: 0 !important;
-                white-space: nowrap;
-            }
-
-            /* 🔹 Only inputs inline — NOT textarea */
-            input {
-                display: inline !important;
-                border: none !important;
-                padding: 0 !important;
-                background: transparent !important;
-                width: auto !important;
-                min-width: 150px;
-                font-size: 14px;
-            }
-
-            /* ✅ KEY FIX: Always hide textarea during print */
-            textarea {
-                display: none !important;
-            }
-
-            /* ✅ Editable div prints naturally — no special handling needed */
-            .editable-field {
-                display: inline !important;
-                border: none !important;
-                padding: 0 !important;
-                background: transparent !important;
-                min-height: unset !important;
-                box-shadow: none !important;
-                font-size: 14px;
-                white-space: pre-wrap;
-                word-break: break-word;
-            }
-
-            /* Keep numbers on one line only */
-            input[type="number"],
-            #billNo,
-            #billDate,
-            #gstRate {
-                white-space: nowrap !important;
-            }
-
-            .invoice-type-row {
-                display: none !important;
-                height: 0 !important;
-                overflow: hidden !important;
-            }
-
-            .totals-section {
-                width: 100%;
-                margin-top: 15px;
-            }
-
-            #gstBreakup {
-                display: block !important;
-                margin-top: 6px;
-                margin-left: 0;
-                clear: both;
-                font-weight: 500;
-            }
-
-            .grand-total {
-                margin-top: 8px;
-                font-size: 16px;
-            }
-
-            .amount-words {
-                display: block !important;
-                width: 100%;
-                margin-top: 18px;
-                clear: both;
-                white-space: normal !important;
-                word-break: break-word;
-            }
-
-            .totals-wrapper {
-                display: flex;
-                justify-content: space-between;
-                margin-top: 12px;
-                width: 100%;
-            }
-
-            .totals-left {
-                width: 60%;
-                text-align: right;
-            }
-
-            .totals-right {
-                width: 35%;
-                text-align: right;
-                font-weight: 500;
-            }
-
-            #itemTable td:nth-child(5) {
-                white-space: nowrap !important;
-                word-break: keep-all !important;
-            }
-
-            /* Item textarea inside table */
-            #itemTable .item-text {
-                display: none !important;
-            }
-
-            #itemTable .print-text {
-                display: block !important;
-                text-align: left;
-                white-space: pre-wrap;
-                word-break: break-word;
-                font-size: 13px;
+            .invoice-header {
+                page-break-inside: avoid;
             }
         }
 
-        #itemTable th:nth-child(5),
-        #itemTable td:nth-child(5) {
-            width: 120px;
-            white-space: nowrap;
-        }
-
-        #itemTable {
-            table-layout: fixed;
-        }
-
-        #itemTable th,
-        #itemTable td {
+        input,
+        textarea {
             font-size: 13px;
         }
 
@@ -485,6 +427,7 @@
             font-size: 13px;
             color: #555;
             padding-left: 18px;
+            /* visual hierarchy */
         }
 
         .grand-total-row {
@@ -494,6 +437,7 @@
             font-weight: 700;
             font-size: 15px;
         }
+
 
         .company-gstin span {
             font-weight: 600;
@@ -525,12 +469,6 @@
             word-break: break-word;
         }
 
-        .print-text {
-            display: none;
-            white-space: pre-wrap;
-            word-break: break-word;
-            font-size: 14px;
-        }
 
         .footer {
             text-align: center;
@@ -540,34 +478,187 @@
             font-size: 12px;
         }
 
+        .print-text {
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 14px;
+        }
+
         .company-gstin {
             text-align: center;
             font-size: 13px;
             margin-top: 4px;
         }
 
-        #itemTable th:nth-child(1) {
-            width: 30%;
+        /* ===== FOOTER BLOCK ===== */
+
+        .invoice-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            font-size: 13px;
         }
 
-        #itemTable th:nth-child(2) {
-            width: 10%;
+        .bank-details,
+        .terms {
+            width: 48%;
         }
 
-        #itemTable th:nth-child(3) {
-            width: 15%;
+        .bank-details h4,
+        .terms h4 {
+            margin-bottom: 6px;
+            font-size: 14px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 3px;
         }
 
-        #itemTable th:nth-child(4) {
-            width: 15%;
+        .bank-details p {
+            margin: 3px 0;
         }
 
-        #itemTable th:nth-child(5) {
-            width: 15%;
+        .terms ol {
+            padding-left: 18px;
+            margin: 0;
         }
 
-        #itemTable th:nth-child(6) {
-            width: 15%;
+        .terms li {
+            margin-bottom: 4px;
+        }
+
+        /* 🔒 Prevent numbers from breaking into multiple lines */
+        td.right,
+        td:last-child {
+            white-space: nowrap !important;
+        }
+
+        /* Headers must stay readable */
+        th {
+            white-space: nowrap;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Compact numeric columns */
+        /* Shrink numeric BODY cells only */
+        td.hsn,
+        td.qty,
+        td.rate,
+        td.discount,
+        td.total {
+            white-space: nowrap;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        /* Total aligned right */
+        td.total {
+            text-align: right;
+        }
+
+        td.item {
+            white-space: normal !important;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            width: auto;
+        }
+
+        /* ITEM column → take maximum space */
+        th.item,
+        td.item {
+            width: 45%;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        /* HSN */
+        th.hsn,
+        td.hsn {
+            width: 8%;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        /* Qty */
+        th.qty,
+        td.qty {
+            width: 6%;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        /* Rate */
+        th.rate,
+        td.rate {
+            width: 12%;
+            white-space: nowrap;
+            text-align: right;
+        }
+
+        /* Discount */
+        th.discount,
+        td.discount {
+            width: 8%;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        /* Total */
+        th.total,
+        td.total {
+            width: 12%;
+            white-space: nowrap;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .company-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+        }
+
+        .invoice-type-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 2px;
+            color: #2563eb;
+            text-transform: uppercase;
+        }
+
+        .company-gstin {
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .company-meta {
+            font-size: 12px;
+            margin-top: 6px;
+            color: #444;
+        }
+
+        .header-divider {
+            height: 0;
+            border-top: 3px solid #2563eb;
+            /* ← IMPORTANT */
+            margin: 10px 0 14px;
+        }
+
+        .signature-block {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 13px;
+        }
+
+        .signature-block img {
+            height: 45px;
+            object-fit: contain;
+            margin-bottom: 2px;
         }
     </style>
 </head>
@@ -575,19 +666,18 @@
 <body>
 
     <div class="container" id="bill">
-        <div style="border-bottom:3px solid #2563eb; padding-bottom:15px; margin-bottom:20px;">
-            <h2 style="color:#1f2937;">CK ELECTRICALS</h2>
-            <h3 id="invoiceTitle" style="color:#2563eb; font-weight:500;">
-                Proforma Invoice
-            </h3>
+        <div class="invoice-header">
+            <div class="company-title">CK ELECTRICALS</div>
+            <div class="invoice-type-title" id="invoiceTitle">Tax Invoice</div>
             <div class="company-gstin">
-                GSTIN: <span id="companyGSTIN">09ABCDE1234F1Z5</span>
+                GSTIN: <span id="companyGSTIN">09BQWPM3637C1ZG</span>
             </div>
 
-            <div style="text-align:center; font-size:13px; color:#4b5563; margin-top:8px;">
-                Phulpur, Prayagraj, Uttar Pradesh<br>
+            <div class="company-meta">
+                Sarai Abdul Malik, Phulpur, Prayagraj, UP - 212402<br>
                 📞 +91 9415920769 &nbsp; | &nbsp; ✉️ Chandra15274@gmail.com
             </div>
+            <div class="header-divider"></div>
         </div>
 
         <div class="row">
@@ -600,7 +690,6 @@
                 <input type="date" id="billDate" value="">
             </div>
         </div>
-
         <div class="row invoice-type-row">
             <div>
                 <label>Invoice Type</label>
@@ -614,57 +703,60 @@
                     <option value="proforma">Proforma Invoice</option>
                     <option value="tax">Tax Invoice</option>
                     <option value="quotation">Quotation</option>
+                    <option value="bill">Bill</option>
                 </select>
             </div>
         </div>
 
+
         <div class="row">
             <div>
                 <label>Billed To:</label>
-                <!-- ✅ FIX: Using contenteditable div instead of textarea -->
-                <!-- This renders naturally in print without any JS intervention -->
-                <div
-                    id="customer"
-                    class="editable-field"
-                    contenteditable="true"
-                    data-placeholder="Customer Name"
-                ></div>
+                <!-- <input type="text" id="customer" placeholder="Customer Name"> -->
+                <textarea id="customer" rows="1" oninput="autoGrow(this)" placeholder="Customer Name" style="
+                    width:100%;
+                    border:1px solid #d1d5db;
+                    border-radius:6px;
+                    resize:none;
+                    font-size:14px;
+                "></textarea>
             </div>
             <div>
                 <label>Mobile:</label>
                 <input type="text" id="mobile" placeholder="Mobile Number">
             </div>
         </div>
-
         <div class="row customer-gstin">
             <div>
                 <label>Customer GSTIN:</label>
                 <input type="text" id="customerGSTIN" placeholder="Customer GSTIN">
             </div>
         </div>
-
         <table id="itemTable">
             <thead>
                 <tr>
-                    <th>Item</th>
-                    <th>Qty</th>
-                    <th>Rate</th>
-                    <th>Discount %</th>
-                    <th>Total</th>
-                    <th>Action</th>
+                    <th class="item">Item</th>
+                    <th class="hsn">HSN</th>
+                    <th class="qty">Qty</th>
+                    <th class="rate">Rate</th>
+                    <th class="discount">Discount %</th>
+                    <th class="total">Total</th>
+                    <th class="action-col">Action</th>
                 </tr>
             </thead>
             <tbody id="itemBody">
                 <tr>
-                    <td>
+                    <td class="item">
                         <textarea rows="1" oninput="autoGrow(this); calc()" class="item-text"></textarea>
-                        <div class="print-text"></div>
                     </td>
-                    <td><input type="number" oninput="calc()"></td>
-                    <td><input type="number" oninput="calc()"></td>
-                    <td><input type="number" value="0" oninput="calc()"></td>
-                    <td class="right">0</td>
-                    <td>
+                    <td class="hsn">
+                        <input type="text" placeholder="HSN">
+                    </td>
+                    <td class="qty"><input type="number" oninput="calc()"></td>
+                    <td class="rate"><input type="number" oninput="calc()"></td>
+                    <td class="discount"><input type="number" value="0" oninput="calc()"></td>
+                    <td class="total right">0</td>
+                    <td class="action-col">
                         <button class="delete-btn" onclick="deleteRow(this)">Delete</button>
                     </td>
                 </tr>
@@ -679,45 +771,74 @@
                 <input type="number" id="gstRate" value="18" oninput="calc()">
             </div>
         </div>
+        <div class="summary-section totals">
+            <div class="totals-box">
+                <div class="total-row">
+                    <span>Subtotal (after item discount):</span>
+                    <span>₹ <span id="subTotal">0.00</span></span>
+                </div>
 
-        <div class="totals-box">
-            <div class="total-row">
-                <span>Subtotal (after item discount):</span>
-                <span>₹ <span id="subTotal">0.00</span></span>
-            </div>
-            <div class="total-row">
-                <span>Round Off:</span>
-                <span>₹ <span id="roundOff">0.00</span></span>
-            </div>
-            <div class="tax-row">
-                <span>CGST (9%):</span>
-                <span>₹ <span id="cgst">0.00</span></span>
-            </div>
-            <div class="tax-row">
-                <span>SGST (9%):</span>
-                <span>₹ <span id="sgst">0.00</span></span>
-            </div>
-            <div class="grand-total-row">
-                <span>Grand Total (incl. GST):</span>
-                <span>₹ <span id="grandTotal">0.00</span></span>
+                <div class="total-row">
+                    <span>Round Off:</span>
+                    <span>₹ <span id="roundOff">0.00</span></span>
+                </div>
+
+                <div class="tax-row">
+                    <span>CGST (9%):</span>
+                    <span>₹ <span id="cgst">0.00</span></span>
+                </div>
+
+                <div class="tax-row">
+                    <span>SGST (9%):</span>
+                    <span>₹ <span id="sgst">0.00</span></span>
+                </div>
+
+                <div class="grand-total-row">
+                    <span>Grand Total (incl. GST):</span>
+                    <span>₹ <span id="grandTotal">0.00</span></span>
+                </div>
             </div>
         </div>
-
         <div class="row amount-gst-row">
             <div>
                 <label>Amount in Words:</label>
                 <input type="text" id="amountWords" readonly>
             </div>
+            <!-- <div>
+                <label>GST Breakup:</label>
+                <div id="gstBreakup" style="font-size:14px;"></div>
+            </div>  -->
         </div>
-
-        <div class="signature">
-            <img src="signature.jpeg" alt="Signature" style="height:60px;"><br>
+        <div class="invoice-footer">
+            <div class="bank-details">
+                <h4>Bank Details</h4>
+                <p><strong>Bank Name:</strong> State Bank of India</p>
+                <p><strong>Account No:</strong> 45664222254</p>
+                <p><strong>IFSC Code:</strong> SBIN0000155</p>
+                <p><strong>Branch:</strong> Phulpur, Prayagraj</p>
+            </div>
+            <div class="terms">
+                <h4>Terms & Conditions</h4>
+                <ol>
+                    <li>Goods once sold will not be taken back.</li>
+                    <li>Payment to be made within 7 days.</li>
+                    <li>Warranty as per manufacturer terms.</li>
+                    <li>Subject to Jaunpur jurisdiction only.</li>
+                </ol>
+            </div>
+        </div>
+        <!-- <div class="signature">
             Authorized Signature
+        </div> -->
+        <div class="signature-block">
+            <img src="signature.jpeg" alt="Signature">
+            <div>Authorized Signature</div>
         </div>
 
         <div class="footer" id="invoiceFooter">
             This is a computer-generated proforma invoice
         </div>
+
 
         <button class="print-btn" onclick="validateBeforePrint()">Print / Save PDF</button>
     </div>
@@ -732,7 +853,6 @@
                 document.getElementById("customerGSTIN").focus();
                 return;
             }
-
             window.print();
         }
 
@@ -747,27 +867,42 @@
             const title = document.getElementById("invoiceTitle");
             const footer = document.getElementById("invoiceFooter");
             const container = document.querySelector(".container");
+
             const customerGSTIN = document.getElementById("customerGSTIN");
 
-            container.classList.remove("invoice-tax", "invoice-proforma", "invoice-quotation");
+            container.classList.remove("invoice-tax", "invoice-proforma", "invoice-quotation", "invoice-bill");
 
             if (type === "tax") {
                 title.innerText = "Tax Invoice";
                 footer.innerText = "This is a computer-generated tax invoice";
                 container.classList.add("invoice-tax");
                 customerGSTIN.required = true;
+
             } else if (type === "proforma") {
                 title.innerText = "Proforma Invoice";
                 footer.innerText = "This is a computer-generated proforma invoice";
                 container.classList.add("invoice-proforma");
                 customerGSTIN.required = false;
-            } else {
+
+            } else if (type === "quotation") {
                 title.innerText = "Quotation";
                 footer.innerText = "This is a computer-generated quotation";
                 container.classList.add("invoice-quotation");
                 customerGSTIN.required = false;
+            } else {
+                title.innerText = "Bill";
+                footer.innerText = "This is a computer-generated bill";
+                container.classList.add("invoice-bill");
+                customerGSTIN.required = true;
             }
         }
+
+
+        // ===== Auto Bill Number =====
+        // let lastBillNumber = localStorage.getItem('lastBillNumber') || 0;
+        // let newBillNumber = parseInt(lastBillNumber) + 1;
+        // document.getElementById('billNo').value = newBillNumber;
+        // localStorage.setItem('lastBillNumber', newBillNumber);
 
         // ===== Set today's date =====
         document.getElementById('billDate').valueAsDate = new Date();
@@ -777,40 +912,62 @@
             let tbody = document.getElementById("itemBody");
             let row = tbody.insertRow();
 
-            // Cell 0: Item textarea + print-text div
-            let cell0 = row.insertCell(0);
-            cell0.innerHTML = `<textarea rows="1" oninput="autoGrow(this); calc()" class="item-text"></textarea><div class="print-text"></div>`;
+            row.insertCell(0).innerHTML =
+                `<textarea rows="1" oninput="autoGrow(this); calc()" class="item-text"></textarea>`;
 
-            row.insertCell(1).innerHTML = `<input type="number" oninput="calc()">`;
-            row.insertCell(2).innerHTML = `<input type="number" oninput="calc()">`;
-            row.insertCell(3).innerHTML = `<input type="number" value="0" oninput="calc()">`;
+            row.insertCell(1).innerHTML =
+                `<input type="text" placeholder="HSN">`;
 
-            row.insertCell(4).className = "right";
-            row.cells[4].innerText = "0";
+            row.insertCell(2).innerHTML =
+                `<input type="number" oninput="calc()">`;
 
-            row.insertCell(5).innerHTML = `<button class="delete-btn" onclick="deleteRow(this)">Delete</button>`;
+            row.insertCell(3).innerHTML =
+                `<input type="number" oninput="calc()">`;
+
+            row.insertCell(4).innerHTML =
+                `<input type="number" value="0" oninput="calc()">`;
+
+            row.insertCell(5).className = "right";
+            row.cells[5].innerText = "0";
+
+            row.insertCell(6).innerHTML =
+                `<button class="delete-btn" onclick="deleteRow(this)">Delete</button>`;
         }
 
         // ===== Delete Item Row =====
         function deleteRow(btn) {
             let row = btn.parentNode.parentNode;
             row.parentNode.removeChild(row);
-            calc();
+            calc(); // recalculate totals
+        }
+        function adjustPrintDensity() {
+            const rows = document.querySelectorAll("#itemBody tr");
+            const table = document.querySelector("table");
+
+            table.classList.remove("compact", "ultra-compact");
+
+            if (rows.length > 10 && rows.length <= 14) {
+                table.classList.add("compact");
+            }
+
+            if (rows.length > 14) {
+                table.classList.add("ultra-compact");
+            }
         }
 
-        // ===== Calculate Totals =====
+        // ===== Calculate Totals, GST & Amount in Words =====
         function calc() {
             let subtotal = 0;
             let rows = document.querySelectorAll("#itemBody tr");
 
             rows.forEach(row => {
-                let qty = parseFloat(row.cells[1].querySelector("input").value) || 0;
-                let rate = parseFloat(row.cells[2].querySelector("input").value) || 0;
-                let discount = parseFloat(row.cells[3].querySelector("input").value) || 0;
+                let qty = parseFloat(row.cells[2].querySelector("input").value) || 0;
+                let rate = parseFloat(row.cells[3].querySelector("input").value) || 0;
+                let discount = parseFloat(row.cells[4].querySelector("input").value) || 0;
 
                 let total = qty * rate;
                 let discountedTotal = total - (total * discount / 100);
-                row.cells[4].innerText = discountedTotal.toFixed(2);
+                row.cells[5].innerText = discountedTotal.toFixed(2);
                 subtotal += discountedTotal;
             });
 
@@ -819,8 +976,11 @@
             let gstRate = parseFloat(document.getElementById("gstRate").value) || 0;
             let cgst = (subtotal * gstRate / 2 / 100).toFixed(2);
             let sgst = (subtotal * gstRate / 2 / 100).toFixed(2);
+            // document.getElementById("gstBreakup").innerHTML =
+            //     `CGST (${gstRate / 2}%): ₹${cgst}<br>SGST (${gstRate / 2}%): ₹${sgst}`;
             document.getElementById("cgst").innerText = cgst;
             document.getElementById("sgst").innerText = sgst;
+
 
             let exactTotal = subtotal + parseFloat(cgst) + parseFloat(sgst);
             let roundedTotal = Math.ceil(exactTotal);
@@ -830,13 +990,17 @@
             document.getElementById("roundOff").innerText = roundOff.toFixed(2);
             document.getElementById("amountWords").value =
                 numberToWords(roundedTotal) + " Rupees Only";
+            adjustPrintDensity();
         }
 
+
+        // ===== Convert Number to Words =====
         // ===== Convert Number to Words =====
         function numberToWords(num) {
             const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
                 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen',
                 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+
             const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty',
                 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
@@ -861,22 +1025,23 @@
             return inWords(num);
         }
 
-        // ===== Sync item textarea → print-text div before printing =====
+        // ===== Initial Setup =====
         function preparePrint() {
-            // For item table textareas only
-            document.querySelectorAll("#itemBody .item-text").forEach(t => {
-                const printDiv = t.parentNode.querySelector(".print-text");
-                if (printDiv) {
-                    printDiv.innerText = t.value.trim();
-                }
-                // Hide the textarea (belt & suspenders alongside CSS)
+            document.querySelectorAll("textarea").forEach(t => {
+                const div = document.createElement("div");
+                div.className = "print-text";
+                div.innerText = t.value;
+                div.setAttribute("data-textarea", "true");
                 t.style.display = "none";
+                t.parentNode.appendChild(div);
             });
         }
 
         function restoreAfterPrint() {
-            document.querySelectorAll("#itemBody .item-text").forEach(t => {
-                t.style.display = "";
+            document.querySelectorAll("div[data-textarea]").forEach(div => {
+                const textarea = div.parentNode.querySelector("textarea");
+                if (textarea) textarea.style.display = "";
+                div.remove();
             });
         }
 
@@ -888,7 +1053,9 @@
             changeInvoiceType();
             calc();
         };
+
     </script>
 
 </body>
+
 </html>
